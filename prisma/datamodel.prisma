@@ -14,4 +14,27 @@ type User {
   password: String!
   name: String!
   posts: [Post!]!
+  results: [GameResult!]!
+}
+
+type GameResult {
+  id: ID! @id
+  user: User!
+  scoreBoard: ScoreBoard!
+  score: Int
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type ScoreBoard {
+  id: ID! @id
+  name: String! @unique
+  description: String
+  published: Boolean! @default(value: false)
+  
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  endsAt: DateTime
+
+  results: [GameResult!]!
 }

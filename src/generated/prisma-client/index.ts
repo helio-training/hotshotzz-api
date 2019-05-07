@@ -16,7 +16,9 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  gameResult: (where?: GameResultWhereInput) => Promise<boolean>;
   post: (where?: PostWhereInput) => Promise<boolean>;
+  scoreBoard: (where?: ScoreBoardWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -39,6 +41,25 @@ export interface Prisma {
    * Queries
    */
 
+  gameResult: (where: GameResultWhereUniqueInput) => GameResultNullablePromise;
+  gameResults: (args?: {
+    where?: GameResultWhereInput;
+    orderBy?: GameResultOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<GameResult>;
+  gameResultsConnection: (args?: {
+    where?: GameResultWhereInput;
+    orderBy?: GameResultOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => GameResultConnectionPromise;
   post: (where: PostWhereUniqueInput) => PostNullablePromise;
   posts: (args?: {
     where?: PostWhereInput;
@@ -58,6 +79,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => PostConnectionPromise;
+  scoreBoard: (where: ScoreBoardWhereUniqueInput) => ScoreBoardNullablePromise;
+  scoreBoards: (args?: {
+    where?: ScoreBoardWhereInput;
+    orderBy?: ScoreBoardOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<ScoreBoard>;
+  scoreBoardsConnection: (args?: {
+    where?: ScoreBoardWhereInput;
+    orderBy?: ScoreBoardOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ScoreBoardConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -83,6 +123,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createGameResult: (data: GameResultCreateInput) => GameResultPromise;
+  updateGameResult: (args: {
+    data: GameResultUpdateInput;
+    where: GameResultWhereUniqueInput;
+  }) => GameResultPromise;
+  updateManyGameResults: (args: {
+    data: GameResultUpdateManyMutationInput;
+    where?: GameResultWhereInput;
+  }) => BatchPayloadPromise;
+  upsertGameResult: (args: {
+    where: GameResultWhereUniqueInput;
+    create: GameResultCreateInput;
+    update: GameResultUpdateInput;
+  }) => GameResultPromise;
+  deleteGameResult: (where: GameResultWhereUniqueInput) => GameResultPromise;
+  deleteManyGameResults: (where?: GameResultWhereInput) => BatchPayloadPromise;
   createPost: (data: PostCreateInput) => PostPromise;
   updatePost: (args: {
     data: PostUpdateInput;
@@ -99,6 +155,22 @@ export interface Prisma {
   }) => PostPromise;
   deletePost: (where: PostWhereUniqueInput) => PostPromise;
   deleteManyPosts: (where?: PostWhereInput) => BatchPayloadPromise;
+  createScoreBoard: (data: ScoreBoardCreateInput) => ScoreBoardPromise;
+  updateScoreBoard: (args: {
+    data: ScoreBoardUpdateInput;
+    where: ScoreBoardWhereUniqueInput;
+  }) => ScoreBoardPromise;
+  updateManyScoreBoards: (args: {
+    data: ScoreBoardUpdateManyMutationInput;
+    where?: ScoreBoardWhereInput;
+  }) => BatchPayloadPromise;
+  upsertScoreBoard: (args: {
+    where: ScoreBoardWhereUniqueInput;
+    create: ScoreBoardCreateInput;
+    update: ScoreBoardUpdateInput;
+  }) => ScoreBoardPromise;
+  deleteScoreBoard: (where: ScoreBoardWhereUniqueInput) => ScoreBoardPromise;
+  deleteManyScoreBoards: (where?: ScoreBoardWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -124,9 +196,15 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  gameResult: (
+    where?: GameResultSubscriptionWhereInput
+  ) => GameResultSubscriptionPayloadSubscription;
   post: (
     where?: PostSubscriptionWhereInput
   ) => PostSubscriptionPayloadSubscription;
+  scoreBoard: (
+    where?: ScoreBoardSubscriptionWhereInput
+  ) => ScoreBoardSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -154,6 +232,32 @@ export type PostOrderByInput =
   | "content_ASC"
   | "content_DESC";
 
+export type GameResultOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "score_ASC"
+  | "score_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type ScoreBoardOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "published_ASC"
+  | "published_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "endsAt_ASC"
+  | "endsAt_DESC";
+
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -166,7 +270,7 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type PostWhereUniqueInput = AtLeastOne<{
+export type GameResultWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -297,68 +401,164 @@ export interface UserWhereInput {
   posts_every?: Maybe<PostWhereInput>;
   posts_some?: Maybe<PostWhereInput>;
   posts_none?: Maybe<PostWhereInput>;
+  results_every?: Maybe<GameResultWhereInput>;
+  results_some?: Maybe<GameResultWhereInput>;
+  results_none?: Maybe<GameResultWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
+
+export interface GameResultWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user?: Maybe<UserWhereInput>;
+  scoreBoard?: Maybe<ScoreBoardWhereInput>;
+  score?: Maybe<Int>;
+  score_not?: Maybe<Int>;
+  score_in?: Maybe<Int[] | Int>;
+  score_not_in?: Maybe<Int[] | Int>;
+  score_lt?: Maybe<Int>;
+  score_lte?: Maybe<Int>;
+  score_gt?: Maybe<Int>;
+  score_gte?: Maybe<Int>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<GameResultWhereInput[] | GameResultWhereInput>;
+  OR?: Maybe<GameResultWhereInput[] | GameResultWhereInput>;
+  NOT?: Maybe<GameResultWhereInput[] | GameResultWhereInput>;
+}
+
+export interface ScoreBoardWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  published_not?: Maybe<Boolean>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  endsAt?: Maybe<DateTimeInput>;
+  endsAt_not?: Maybe<DateTimeInput>;
+  endsAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endsAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endsAt_lt?: Maybe<DateTimeInput>;
+  endsAt_lte?: Maybe<DateTimeInput>;
+  endsAt_gt?: Maybe<DateTimeInput>;
+  endsAt_gte?: Maybe<DateTimeInput>;
+  results_every?: Maybe<GameResultWhereInput>;
+  results_some?: Maybe<GameResultWhereInput>;
+  results_none?: Maybe<GameResultWhereInput>;
+  AND?: Maybe<ScoreBoardWhereInput[] | ScoreBoardWhereInput>;
+  OR?: Maybe<ScoreBoardWhereInput[] | ScoreBoardWhereInput>;
+  NOT?: Maybe<ScoreBoardWhereInput[] | ScoreBoardWhereInput>;
+}
+
+export type PostWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type ScoreBoardWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  name?: Maybe<String>;
+}>;
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   email?: Maybe<String>;
 }>;
 
-export interface PostCreateInput {
+export interface GameResultCreateInput {
   id?: Maybe<ID_Input>;
-  published?: Maybe<Boolean>;
-  title: String;
-  content: String;
-  author: UserCreateOneWithoutPostsInput;
+  user: UserCreateOneWithoutResultsInput;
+  scoreBoard: ScoreBoardCreateOneWithoutResultsInput;
+  score?: Maybe<Int>;
 }
 
-export interface UserCreateOneWithoutPostsInput {
-  create?: Maybe<UserCreateWithoutPostsInput>;
+export interface UserCreateOneWithoutResultsInput {
+  create?: Maybe<UserCreateWithoutResultsInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserCreateWithoutPostsInput {
-  id?: Maybe<ID_Input>;
-  email: String;
-  password: String;
-  name: String;
-}
-
-export interface PostUpdateInput {
-  published?: Maybe<Boolean>;
-  title?: Maybe<String>;
-  content?: Maybe<String>;
-  author?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
-}
-
-export interface UserUpdateOneRequiredWithoutPostsInput {
-  create?: Maybe<UserCreateWithoutPostsInput>;
-  update?: Maybe<UserUpdateWithoutPostsDataInput>;
-  upsert?: Maybe<UserUpsertWithoutPostsInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateWithoutPostsDataInput {
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  name?: Maybe<String>;
-}
-
-export interface UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput;
-  create: UserCreateWithoutPostsInput;
-}
-
-export interface PostUpdateManyMutationInput {
-  published?: Maybe<Boolean>;
-  title?: Maybe<String>;
-  content?: Maybe<String>;
-}
-
-export interface UserCreateInput {
+export interface UserCreateWithoutResultsInput {
   id?: Maybe<ID_Input>;
   email: String;
   password: String;
@@ -378,7 +578,33 @@ export interface PostCreateWithoutAuthorInput {
   content: String;
 }
 
-export interface UserUpdateInput {
+export interface ScoreBoardCreateOneWithoutResultsInput {
+  create?: Maybe<ScoreBoardCreateWithoutResultsInput>;
+  connect?: Maybe<ScoreBoardWhereUniqueInput>;
+}
+
+export interface ScoreBoardCreateWithoutResultsInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  description?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  endsAt?: Maybe<DateTimeInput>;
+}
+
+export interface GameResultUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredWithoutResultsInput>;
+  scoreBoard?: Maybe<ScoreBoardUpdateOneRequiredWithoutResultsInput>;
+  score?: Maybe<Int>;
+}
+
+export interface UserUpdateOneRequiredWithoutResultsInput {
+  create?: Maybe<UserCreateWithoutResultsInput>;
+  update?: Maybe<UserUpdateWithoutResultsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutResultsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutResultsDataInput {
   email?: Maybe<String>;
   password?: Maybe<String>;
   name?: Maybe<String>;
@@ -499,10 +725,308 @@ export interface PostUpdateManyDataInput {
   content?: Maybe<String>;
 }
 
+export interface UserUpsertWithoutResultsInput {
+  update: UserUpdateWithoutResultsDataInput;
+  create: UserCreateWithoutResultsInput;
+}
+
+export interface ScoreBoardUpdateOneRequiredWithoutResultsInput {
+  create?: Maybe<ScoreBoardCreateWithoutResultsInput>;
+  update?: Maybe<ScoreBoardUpdateWithoutResultsDataInput>;
+  upsert?: Maybe<ScoreBoardUpsertWithoutResultsInput>;
+  connect?: Maybe<ScoreBoardWhereUniqueInput>;
+}
+
+export interface ScoreBoardUpdateWithoutResultsDataInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  endsAt?: Maybe<DateTimeInput>;
+}
+
+export interface ScoreBoardUpsertWithoutResultsInput {
+  update: ScoreBoardUpdateWithoutResultsDataInput;
+  create: ScoreBoardCreateWithoutResultsInput;
+}
+
+export interface GameResultUpdateManyMutationInput {
+  score?: Maybe<Int>;
+}
+
+export interface PostCreateInput {
+  id?: Maybe<ID_Input>;
+  published?: Maybe<Boolean>;
+  title: String;
+  content: String;
+  author: UserCreateOneWithoutPostsInput;
+}
+
+export interface UserCreateOneWithoutPostsInput {
+  create?: Maybe<UserCreateWithoutPostsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutPostsInput {
+  id?: Maybe<ID_Input>;
+  email: String;
+  password: String;
+  name: String;
+  results?: Maybe<GameResultCreateManyWithoutUserInput>;
+}
+
+export interface GameResultCreateManyWithoutUserInput {
+  create?: Maybe<
+    GameResultCreateWithoutUserInput[] | GameResultCreateWithoutUserInput
+  >;
+  connect?: Maybe<GameResultWhereUniqueInput[] | GameResultWhereUniqueInput>;
+}
+
+export interface GameResultCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  scoreBoard: ScoreBoardCreateOneWithoutResultsInput;
+  score?: Maybe<Int>;
+}
+
+export interface PostUpdateInput {
+  published?: Maybe<Boolean>;
+  title?: Maybe<String>;
+  content?: Maybe<String>;
+  author?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutPostsInput {
+  create?: Maybe<UserCreateWithoutPostsInput>;
+  update?: Maybe<UserUpdateWithoutPostsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutPostsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutPostsDataInput {
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  name?: Maybe<String>;
+  results?: Maybe<GameResultUpdateManyWithoutUserInput>;
+}
+
+export interface GameResultUpdateManyWithoutUserInput {
+  create?: Maybe<
+    GameResultCreateWithoutUserInput[] | GameResultCreateWithoutUserInput
+  >;
+  delete?: Maybe<GameResultWhereUniqueInput[] | GameResultWhereUniqueInput>;
+  connect?: Maybe<GameResultWhereUniqueInput[] | GameResultWhereUniqueInput>;
+  set?: Maybe<GameResultWhereUniqueInput[] | GameResultWhereUniqueInput>;
+  disconnect?: Maybe<GameResultWhereUniqueInput[] | GameResultWhereUniqueInput>;
+  update?: Maybe<
+    | GameResultUpdateWithWhereUniqueWithoutUserInput[]
+    | GameResultUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | GameResultUpsertWithWhereUniqueWithoutUserInput[]
+    | GameResultUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<GameResultScalarWhereInput[] | GameResultScalarWhereInput>;
+  updateMany?: Maybe<
+    | GameResultUpdateManyWithWhereNestedInput[]
+    | GameResultUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface GameResultUpdateWithWhereUniqueWithoutUserInput {
+  where: GameResultWhereUniqueInput;
+  data: GameResultUpdateWithoutUserDataInput;
+}
+
+export interface GameResultUpdateWithoutUserDataInput {
+  scoreBoard?: Maybe<ScoreBoardUpdateOneRequiredWithoutResultsInput>;
+  score?: Maybe<Int>;
+}
+
+export interface GameResultUpsertWithWhereUniqueWithoutUserInput {
+  where: GameResultWhereUniqueInput;
+  update: GameResultUpdateWithoutUserDataInput;
+  create: GameResultCreateWithoutUserInput;
+}
+
+export interface GameResultScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  score?: Maybe<Int>;
+  score_not?: Maybe<Int>;
+  score_in?: Maybe<Int[] | Int>;
+  score_not_in?: Maybe<Int[] | Int>;
+  score_lt?: Maybe<Int>;
+  score_lte?: Maybe<Int>;
+  score_gt?: Maybe<Int>;
+  score_gte?: Maybe<Int>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<GameResultScalarWhereInput[] | GameResultScalarWhereInput>;
+  OR?: Maybe<GameResultScalarWhereInput[] | GameResultScalarWhereInput>;
+  NOT?: Maybe<GameResultScalarWhereInput[] | GameResultScalarWhereInput>;
+}
+
+export interface GameResultUpdateManyWithWhereNestedInput {
+  where: GameResultScalarWhereInput;
+  data: GameResultUpdateManyDataInput;
+}
+
+export interface GameResultUpdateManyDataInput {
+  score?: Maybe<Int>;
+}
+
+export interface UserUpsertWithoutPostsInput {
+  update: UserUpdateWithoutPostsDataInput;
+  create: UserCreateWithoutPostsInput;
+}
+
+export interface PostUpdateManyMutationInput {
+  published?: Maybe<Boolean>;
+  title?: Maybe<String>;
+  content?: Maybe<String>;
+}
+
+export interface ScoreBoardCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  description?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  endsAt?: Maybe<DateTimeInput>;
+  results?: Maybe<GameResultCreateManyWithoutScoreBoardInput>;
+}
+
+export interface GameResultCreateManyWithoutScoreBoardInput {
+  create?: Maybe<
+    | GameResultCreateWithoutScoreBoardInput[]
+    | GameResultCreateWithoutScoreBoardInput
+  >;
+  connect?: Maybe<GameResultWhereUniqueInput[] | GameResultWhereUniqueInput>;
+}
+
+export interface GameResultCreateWithoutScoreBoardInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneWithoutResultsInput;
+  score?: Maybe<Int>;
+}
+
+export interface ScoreBoardUpdateInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  endsAt?: Maybe<DateTimeInput>;
+  results?: Maybe<GameResultUpdateManyWithoutScoreBoardInput>;
+}
+
+export interface GameResultUpdateManyWithoutScoreBoardInput {
+  create?: Maybe<
+    | GameResultCreateWithoutScoreBoardInput[]
+    | GameResultCreateWithoutScoreBoardInput
+  >;
+  delete?: Maybe<GameResultWhereUniqueInput[] | GameResultWhereUniqueInput>;
+  connect?: Maybe<GameResultWhereUniqueInput[] | GameResultWhereUniqueInput>;
+  set?: Maybe<GameResultWhereUniqueInput[] | GameResultWhereUniqueInput>;
+  disconnect?: Maybe<GameResultWhereUniqueInput[] | GameResultWhereUniqueInput>;
+  update?: Maybe<
+    | GameResultUpdateWithWhereUniqueWithoutScoreBoardInput[]
+    | GameResultUpdateWithWhereUniqueWithoutScoreBoardInput
+  >;
+  upsert?: Maybe<
+    | GameResultUpsertWithWhereUniqueWithoutScoreBoardInput[]
+    | GameResultUpsertWithWhereUniqueWithoutScoreBoardInput
+  >;
+  deleteMany?: Maybe<GameResultScalarWhereInput[] | GameResultScalarWhereInput>;
+  updateMany?: Maybe<
+    | GameResultUpdateManyWithWhereNestedInput[]
+    | GameResultUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface GameResultUpdateWithWhereUniqueWithoutScoreBoardInput {
+  where: GameResultWhereUniqueInput;
+  data: GameResultUpdateWithoutScoreBoardDataInput;
+}
+
+export interface GameResultUpdateWithoutScoreBoardDataInput {
+  user?: Maybe<UserUpdateOneRequiredWithoutResultsInput>;
+  score?: Maybe<Int>;
+}
+
+export interface GameResultUpsertWithWhereUniqueWithoutScoreBoardInput {
+  where: GameResultWhereUniqueInput;
+  update: GameResultUpdateWithoutScoreBoardDataInput;
+  create: GameResultCreateWithoutScoreBoardInput;
+}
+
+export interface ScoreBoardUpdateManyMutationInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  endsAt?: Maybe<DateTimeInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  email: String;
+  password: String;
+  name: String;
+  posts?: Maybe<PostCreateManyWithoutAuthorInput>;
+  results?: Maybe<GameResultCreateManyWithoutUserInput>;
+}
+
+export interface UserUpdateInput {
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  name?: Maybe<String>;
+  posts?: Maybe<PostUpdateManyWithoutAuthorInput>;
+  results?: Maybe<GameResultUpdateManyWithoutUserInput>;
+}
+
 export interface UserUpdateManyMutationInput {
   email?: Maybe<String>;
   password?: Maybe<String>;
   name?: Maybe<String>;
+}
+
+export interface GameResultSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<GameResultWhereInput>;
+  AND?: Maybe<
+    GameResultSubscriptionWhereInput[] | GameResultSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    GameResultSubscriptionWhereInput[] | GameResultSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    GameResultSubscriptionWhereInput[] | GameResultSubscriptionWhereInput
+  >;
 }
 
 export interface PostSubscriptionWhereInput {
@@ -514,6 +1038,23 @@ export interface PostSubscriptionWhereInput {
   AND?: Maybe<PostSubscriptionWhereInput[] | PostSubscriptionWhereInput>;
   OR?: Maybe<PostSubscriptionWhereInput[] | PostSubscriptionWhereInput>;
   NOT?: Maybe<PostSubscriptionWhereInput[] | PostSubscriptionWhereInput>;
+}
+
+export interface ScoreBoardSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ScoreBoardWhereInput>;
+  AND?: Maybe<
+    ScoreBoardSubscriptionWhereInput[] | ScoreBoardSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ScoreBoardSubscriptionWhereInput[] | ScoreBoardSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ScoreBoardSubscriptionWhereInput[] | ScoreBoardSubscriptionWhereInput
+  >;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -529,6 +1070,130 @@ export interface UserSubscriptionWhereInput {
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface GameResult {
+  id: ID_Output;
+  score?: Int;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface GameResultPromise extends Promise<GameResult>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  scoreBoard: <T = ScoreBoardPromise>() => T;
+  score: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface GameResultSubscription
+  extends Promise<AsyncIterator<GameResult>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  scoreBoard: <T = ScoreBoardSubscription>() => T;
+  score: () => Promise<AsyncIterator<Int>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface GameResultNullablePromise
+  extends Promise<GameResult | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  scoreBoard: <T = ScoreBoardPromise>() => T;
+  score: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface User {
+  id: ID_Output;
+  email: String;
+  password: String;
+  name: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  name: () => Promise<String>;
+  posts: <T = FragmentableArray<Post>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  results: <T = FragmentableArray<GameResult>>(args?: {
+    where?: GameResultWhereInput;
+    orderBy?: GameResultOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  posts: <T = Promise<AsyncIterator<PostSubscription>>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  results: <T = Promise<AsyncIterator<GameResultSubscription>>>(args?: {
+    where?: GameResultWhereInput;
+    orderBy?: GameResultOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  name: () => Promise<String>;
+  posts: <T = FragmentableArray<Post>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  results: <T = FragmentableArray<GameResult>>(args?: {
+    where?: GameResultWhereInput;
+    orderBy?: GameResultOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface Post {
@@ -574,21 +1239,27 @@ export interface PostNullablePromise
   author: <T = UserPromise>() => T;
 }
 
-export interface User {
+export interface ScoreBoard {
   id: ID_Output;
-  email: String;
-  password: String;
   name: String;
+  description?: String;
+  published: Boolean;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  endsAt?: DateTimeOutput;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface ScoreBoardPromise extends Promise<ScoreBoard>, Fragmentable {
   id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
   name: () => Promise<String>;
-  posts: <T = FragmentableArray<Post>>(args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  description: () => Promise<String>;
+  published: () => Promise<Boolean>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  endsAt: () => Promise<DateTimeOutput>;
+  results: <T = FragmentableArray<GameResult>>(args?: {
+    where?: GameResultWhereInput;
+    orderBy?: GameResultOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -597,16 +1268,19 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   }) => T;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface ScoreBoardSubscription
+  extends Promise<AsyncIterator<ScoreBoard>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
-  posts: <T = Promise<AsyncIterator<PostSubscription>>>(args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  description: () => Promise<AsyncIterator<String>>;
+  published: () => Promise<AsyncIterator<Boolean>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  results: <T = Promise<AsyncIterator<GameResultSubscription>>>(args?: {
+    where?: GameResultWhereInput;
+    orderBy?: GameResultOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -615,16 +1289,19 @@ export interface UserSubscription
   }) => T;
 }
 
-export interface UserNullablePromise
-  extends Promise<User | null>,
+export interface ScoreBoardNullablePromise
+  extends Promise<ScoreBoard | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
   name: () => Promise<String>;
-  posts: <T = FragmentableArray<Post>>(args?: {
-    where?: PostWhereInput;
-    orderBy?: PostOrderByInput;
+  description: () => Promise<String>;
+  published: () => Promise<Boolean>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  endsAt: () => Promise<DateTimeOutput>;
+  results: <T = FragmentableArray<GameResult>>(args?: {
+    where?: GameResultWhereInput;
+    orderBy?: GameResultOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -633,25 +1310,25 @@ export interface UserNullablePromise
   }) => T;
 }
 
-export interface PostConnection {
+export interface GameResultConnection {
   pageInfo: PageInfo;
-  edges: PostEdge[];
+  edges: GameResultEdge[];
 }
 
-export interface PostConnectionPromise
-  extends Promise<PostConnection>,
+export interface GameResultConnectionPromise
+  extends Promise<GameResultConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PostEdge>>() => T;
-  aggregate: <T = AggregatePostPromise>() => T;
+  edges: <T = FragmentableArray<GameResultEdge>>() => T;
+  aggregate: <T = AggregateGameResultPromise>() => T;
 }
 
-export interface PostConnectionSubscription
-  extends Promise<AsyncIterator<PostConnection>>,
+export interface GameResultConnectionSubscription
+  extends Promise<AsyncIterator<GameResultConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePostSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GameResultEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGameResultSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -675,6 +1352,62 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface GameResultEdge {
+  node: GameResult;
+  cursor: String;
+}
+
+export interface GameResultEdgePromise
+  extends Promise<GameResultEdge>,
+    Fragmentable {
+  node: <T = GameResultPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface GameResultEdgeSubscription
+  extends Promise<AsyncIterator<GameResultEdge>>,
+    Fragmentable {
+  node: <T = GameResultSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateGameResult {
+  count: Int;
+}
+
+export interface AggregateGameResultPromise
+  extends Promise<AggregateGameResult>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateGameResultSubscription
+  extends Promise<AsyncIterator<AggregateGameResult>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PostConnection {
+  pageInfo: PageInfo;
+  edges: PostEdge[];
+}
+
+export interface PostConnectionPromise
+  extends Promise<PostConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PostEdge>>() => T;
+  aggregate: <T = AggregatePostPromise>() => T;
+}
+
+export interface PostConnectionSubscription
+  extends Promise<AsyncIterator<PostConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePostSubscription>() => T;
 }
 
 export interface PostEdge {
@@ -706,6 +1439,62 @@ export interface AggregatePostPromise
 
 export interface AggregatePostSubscription
   extends Promise<AsyncIterator<AggregatePost>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ScoreBoardConnection {
+  pageInfo: PageInfo;
+  edges: ScoreBoardEdge[];
+}
+
+export interface ScoreBoardConnectionPromise
+  extends Promise<ScoreBoardConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ScoreBoardEdge>>() => T;
+  aggregate: <T = AggregateScoreBoardPromise>() => T;
+}
+
+export interface ScoreBoardConnectionSubscription
+  extends Promise<AsyncIterator<ScoreBoardConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ScoreBoardEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateScoreBoardSubscription>() => T;
+}
+
+export interface ScoreBoardEdge {
+  node: ScoreBoard;
+  cursor: String;
+}
+
+export interface ScoreBoardEdgePromise
+  extends Promise<ScoreBoardEdge>,
+    Fragmentable {
+  node: <T = ScoreBoardPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ScoreBoardEdgeSubscription
+  extends Promise<AsyncIterator<ScoreBoardEdge>>,
+    Fragmentable {
+  node: <T = ScoreBoardSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateScoreBoard {
+  count: Int;
+}
+
+export interface AggregateScoreBoardPromise
+  extends Promise<AggregateScoreBoard>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateScoreBoardSubscription
+  extends Promise<AsyncIterator<AggregateScoreBoard>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -780,6 +1569,56 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
+export interface GameResultSubscriptionPayload {
+  mutation: MutationType;
+  node: GameResult;
+  updatedFields: String[];
+  previousValues: GameResultPreviousValues;
+}
+
+export interface GameResultSubscriptionPayloadPromise
+  extends Promise<GameResultSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = GameResultPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = GameResultPreviousValuesPromise>() => T;
+}
+
+export interface GameResultSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<GameResultSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = GameResultSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = GameResultPreviousValuesSubscription>() => T;
+}
+
+export interface GameResultPreviousValues {
+  id: ID_Output;
+  score?: Int;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface GameResultPreviousValuesPromise
+  extends Promise<GameResultPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  score: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface GameResultPreviousValuesSubscription
+  extends Promise<AsyncIterator<GameResultPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  score: () => Promise<AsyncIterator<Int>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
 export interface PostSubscriptionPayload {
   mutation: MutationType;
   node: Post;
@@ -834,6 +1673,65 @@ export interface PostPreviousValuesSubscription
   published: () => Promise<AsyncIterator<Boolean>>;
   title: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ScoreBoardSubscriptionPayload {
+  mutation: MutationType;
+  node: ScoreBoard;
+  updatedFields: String[];
+  previousValues: ScoreBoardPreviousValues;
+}
+
+export interface ScoreBoardSubscriptionPayloadPromise
+  extends Promise<ScoreBoardSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ScoreBoardPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ScoreBoardPreviousValuesPromise>() => T;
+}
+
+export interface ScoreBoardSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ScoreBoardSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ScoreBoardSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ScoreBoardPreviousValuesSubscription>() => T;
+}
+
+export interface ScoreBoardPreviousValues {
+  id: ID_Output;
+  name: String;
+  description?: String;
+  published: Boolean;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  endsAt?: DateTimeOutput;
+}
+
+export interface ScoreBoardPreviousValuesPromise
+  extends Promise<ScoreBoardPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+  published: () => Promise<Boolean>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  endsAt: () => Promise<DateTimeOutput>;
+}
+
+export interface ScoreBoardPreviousValuesSubscription
+  extends Promise<AsyncIterator<ScoreBoardPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  published: () => Promise<AsyncIterator<Boolean>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -893,6 +1791,11 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -906,11 +1809,6 @@ export type DateTimeOutput = string;
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
-
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
@@ -930,6 +1828,14 @@ export const models: Model[] = [
   },
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "GameResult",
+    embedded: false
+  },
+  {
+    name: "ScoreBoard",
     embedded: false
   }
 ];

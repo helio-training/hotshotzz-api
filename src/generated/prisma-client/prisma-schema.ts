@@ -2,7 +2,15 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregatePost {
+export const typeDefs = /* GraphQL */ `type AggregateGameResult {
+  count: Int!
+}
+
+type AggregatePost {
+  count: Int!
+}
+
+type AggregateScoreBoard {
   count: Int!
 }
 
@@ -16,15 +24,281 @@ type BatchPayload {
 
 scalar DateTime
 
+type GameResult {
+  id: ID!
+  user: User!
+  scoreBoard: ScoreBoard!
+  score: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type GameResultConnection {
+  pageInfo: PageInfo!
+  edges: [GameResultEdge]!
+  aggregate: AggregateGameResult!
+}
+
+input GameResultCreateInput {
+  id: ID
+  user: UserCreateOneWithoutResultsInput!
+  scoreBoard: ScoreBoardCreateOneWithoutResultsInput!
+  score: Int
+}
+
+input GameResultCreateManyWithoutScoreBoardInput {
+  create: [GameResultCreateWithoutScoreBoardInput!]
+  connect: [GameResultWhereUniqueInput!]
+}
+
+input GameResultCreateManyWithoutUserInput {
+  create: [GameResultCreateWithoutUserInput!]
+  connect: [GameResultWhereUniqueInput!]
+}
+
+input GameResultCreateWithoutScoreBoardInput {
+  id: ID
+  user: UserCreateOneWithoutResultsInput!
+  score: Int
+}
+
+input GameResultCreateWithoutUserInput {
+  id: ID
+  scoreBoard: ScoreBoardCreateOneWithoutResultsInput!
+  score: Int
+}
+
+type GameResultEdge {
+  node: GameResult!
+  cursor: String!
+}
+
+enum GameResultOrderByInput {
+  id_ASC
+  id_DESC
+  score_ASC
+  score_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type GameResultPreviousValues {
+  id: ID!
+  score: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input GameResultScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  score: Int
+  score_not: Int
+  score_in: [Int!]
+  score_not_in: [Int!]
+  score_lt: Int
+  score_lte: Int
+  score_gt: Int
+  score_gte: Int
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [GameResultScalarWhereInput!]
+  OR: [GameResultScalarWhereInput!]
+  NOT: [GameResultScalarWhereInput!]
+}
+
+type GameResultSubscriptionPayload {
+  mutation: MutationType!
+  node: GameResult
+  updatedFields: [String!]
+  previousValues: GameResultPreviousValues
+}
+
+input GameResultSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GameResultWhereInput
+  AND: [GameResultSubscriptionWhereInput!]
+  OR: [GameResultSubscriptionWhereInput!]
+  NOT: [GameResultSubscriptionWhereInput!]
+}
+
+input GameResultUpdateInput {
+  user: UserUpdateOneRequiredWithoutResultsInput
+  scoreBoard: ScoreBoardUpdateOneRequiredWithoutResultsInput
+  score: Int
+}
+
+input GameResultUpdateManyDataInput {
+  score: Int
+}
+
+input GameResultUpdateManyMutationInput {
+  score: Int
+}
+
+input GameResultUpdateManyWithoutScoreBoardInput {
+  create: [GameResultCreateWithoutScoreBoardInput!]
+  delete: [GameResultWhereUniqueInput!]
+  connect: [GameResultWhereUniqueInput!]
+  set: [GameResultWhereUniqueInput!]
+  disconnect: [GameResultWhereUniqueInput!]
+  update: [GameResultUpdateWithWhereUniqueWithoutScoreBoardInput!]
+  upsert: [GameResultUpsertWithWhereUniqueWithoutScoreBoardInput!]
+  deleteMany: [GameResultScalarWhereInput!]
+  updateMany: [GameResultUpdateManyWithWhereNestedInput!]
+}
+
+input GameResultUpdateManyWithoutUserInput {
+  create: [GameResultCreateWithoutUserInput!]
+  delete: [GameResultWhereUniqueInput!]
+  connect: [GameResultWhereUniqueInput!]
+  set: [GameResultWhereUniqueInput!]
+  disconnect: [GameResultWhereUniqueInput!]
+  update: [GameResultUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [GameResultUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [GameResultScalarWhereInput!]
+  updateMany: [GameResultUpdateManyWithWhereNestedInput!]
+}
+
+input GameResultUpdateManyWithWhereNestedInput {
+  where: GameResultScalarWhereInput!
+  data: GameResultUpdateManyDataInput!
+}
+
+input GameResultUpdateWithoutScoreBoardDataInput {
+  user: UserUpdateOneRequiredWithoutResultsInput
+  score: Int
+}
+
+input GameResultUpdateWithoutUserDataInput {
+  scoreBoard: ScoreBoardUpdateOneRequiredWithoutResultsInput
+  score: Int
+}
+
+input GameResultUpdateWithWhereUniqueWithoutScoreBoardInput {
+  where: GameResultWhereUniqueInput!
+  data: GameResultUpdateWithoutScoreBoardDataInput!
+}
+
+input GameResultUpdateWithWhereUniqueWithoutUserInput {
+  where: GameResultWhereUniqueInput!
+  data: GameResultUpdateWithoutUserDataInput!
+}
+
+input GameResultUpsertWithWhereUniqueWithoutScoreBoardInput {
+  where: GameResultWhereUniqueInput!
+  update: GameResultUpdateWithoutScoreBoardDataInput!
+  create: GameResultCreateWithoutScoreBoardInput!
+}
+
+input GameResultUpsertWithWhereUniqueWithoutUserInput {
+  where: GameResultWhereUniqueInput!
+  update: GameResultUpdateWithoutUserDataInput!
+  create: GameResultCreateWithoutUserInput!
+}
+
+input GameResultWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  scoreBoard: ScoreBoardWhereInput
+  score: Int
+  score_not: Int
+  score_in: [Int!]
+  score_not_in: [Int!]
+  score_lt: Int
+  score_lte: Int
+  score_gt: Int
+  score_gte: Int
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [GameResultWhereInput!]
+  OR: [GameResultWhereInput!]
+  NOT: [GameResultWhereInput!]
+}
+
+input GameResultWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
+  createGameResult(data: GameResultCreateInput!): GameResult!
+  updateGameResult(data: GameResultUpdateInput!, where: GameResultWhereUniqueInput!): GameResult
+  updateManyGameResults(data: GameResultUpdateManyMutationInput!, where: GameResultWhereInput): BatchPayload!
+  upsertGameResult(where: GameResultWhereUniqueInput!, create: GameResultCreateInput!, update: GameResultUpdateInput!): GameResult!
+  deleteGameResult(where: GameResultWhereUniqueInput!): GameResult
+  deleteManyGameResults(where: GameResultWhereInput): BatchPayload!
   createPost(data: PostCreateInput!): Post!
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
   deletePost(where: PostWhereUniqueInput!): Post
   deleteManyPosts(where: PostWhereInput): BatchPayload!
+  createScoreBoard(data: ScoreBoardCreateInput!): ScoreBoard!
+  updateScoreBoard(data: ScoreBoardUpdateInput!, where: ScoreBoardWhereUniqueInput!): ScoreBoard
+  updateManyScoreBoards(data: ScoreBoardUpdateManyMutationInput!, where: ScoreBoardWhereInput): BatchPayload!
+  upsertScoreBoard(where: ScoreBoardWhereUniqueInput!, create: ScoreBoardCreateInput!, update: ScoreBoardUpdateInput!): ScoreBoard!
+  deleteScoreBoard(where: ScoreBoardWhereUniqueInput!): ScoreBoard
+  deleteManyScoreBoards(where: ScoreBoardWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -324,17 +598,230 @@ input PostWhereUniqueInput {
 }
 
 type Query {
+  gameResult(where: GameResultWhereUniqueInput!): GameResult
+  gameResults(where: GameResultWhereInput, orderBy: GameResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GameResult]!
+  gameResultsConnection(where: GameResultWhereInput, orderBy: GameResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GameResultConnection!
   post(where: PostWhereUniqueInput!): Post
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  scoreBoard(where: ScoreBoardWhereUniqueInput!): ScoreBoard
+  scoreBoards(where: ScoreBoardWhereInput, orderBy: ScoreBoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ScoreBoard]!
+  scoreBoardsConnection(where: ScoreBoardWhereInput, orderBy: ScoreBoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ScoreBoardConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
+type ScoreBoard {
+  id: ID!
+  name: String!
+  description: String
+  published: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  endsAt: DateTime
+  results(where: GameResultWhereInput, orderBy: GameResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GameResult!]
+}
+
+type ScoreBoardConnection {
+  pageInfo: PageInfo!
+  edges: [ScoreBoardEdge]!
+  aggregate: AggregateScoreBoard!
+}
+
+input ScoreBoardCreateInput {
+  id: ID
+  name: String!
+  description: String
+  published: Boolean
+  endsAt: DateTime
+  results: GameResultCreateManyWithoutScoreBoardInput
+}
+
+input ScoreBoardCreateOneWithoutResultsInput {
+  create: ScoreBoardCreateWithoutResultsInput
+  connect: ScoreBoardWhereUniqueInput
+}
+
+input ScoreBoardCreateWithoutResultsInput {
+  id: ID
+  name: String!
+  description: String
+  published: Boolean
+  endsAt: DateTime
+}
+
+type ScoreBoardEdge {
+  node: ScoreBoard!
+  cursor: String!
+}
+
+enum ScoreBoardOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+  published_ASC
+  published_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  endsAt_ASC
+  endsAt_DESC
+}
+
+type ScoreBoardPreviousValues {
+  id: ID!
+  name: String!
+  description: String
+  published: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  endsAt: DateTime
+}
+
+type ScoreBoardSubscriptionPayload {
+  mutation: MutationType!
+  node: ScoreBoard
+  updatedFields: [String!]
+  previousValues: ScoreBoardPreviousValues
+}
+
+input ScoreBoardSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ScoreBoardWhereInput
+  AND: [ScoreBoardSubscriptionWhereInput!]
+  OR: [ScoreBoardSubscriptionWhereInput!]
+  NOT: [ScoreBoardSubscriptionWhereInput!]
+}
+
+input ScoreBoardUpdateInput {
+  name: String
+  description: String
+  published: Boolean
+  endsAt: DateTime
+  results: GameResultUpdateManyWithoutScoreBoardInput
+}
+
+input ScoreBoardUpdateManyMutationInput {
+  name: String
+  description: String
+  published: Boolean
+  endsAt: DateTime
+}
+
+input ScoreBoardUpdateOneRequiredWithoutResultsInput {
+  create: ScoreBoardCreateWithoutResultsInput
+  update: ScoreBoardUpdateWithoutResultsDataInput
+  upsert: ScoreBoardUpsertWithoutResultsInput
+  connect: ScoreBoardWhereUniqueInput
+}
+
+input ScoreBoardUpdateWithoutResultsDataInput {
+  name: String
+  description: String
+  published: Boolean
+  endsAt: DateTime
+}
+
+input ScoreBoardUpsertWithoutResultsInput {
+  update: ScoreBoardUpdateWithoutResultsDataInput!
+  create: ScoreBoardCreateWithoutResultsInput!
+}
+
+input ScoreBoardWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  published: Boolean
+  published_not: Boolean
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  endsAt: DateTime
+  endsAt_not: DateTime
+  endsAt_in: [DateTime!]
+  endsAt_not_in: [DateTime!]
+  endsAt_lt: DateTime
+  endsAt_lte: DateTime
+  endsAt_gt: DateTime
+  endsAt_gte: DateTime
+  results_every: GameResultWhereInput
+  results_some: GameResultWhereInput
+  results_none: GameResultWhereInput
+  AND: [ScoreBoardWhereInput!]
+  OR: [ScoreBoardWhereInput!]
+  NOT: [ScoreBoardWhereInput!]
+}
+
+input ScoreBoardWhereUniqueInput {
+  id: ID
+  name: String
+}
+
 type Subscription {
+  gameResult(where: GameResultSubscriptionWhereInput): GameResultSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+  scoreBoard(where: ScoreBoardSubscriptionWhereInput): ScoreBoardSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -344,6 +831,7 @@ type User {
   password: String!
   name: String!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  results(where: GameResultWhereInput, orderBy: GameResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GameResult!]
 }
 
 type UserConnection {
@@ -358,10 +846,16 @@ input UserCreateInput {
   password: String!
   name: String!
   posts: PostCreateManyWithoutAuthorInput
+  results: GameResultCreateManyWithoutUserInput
 }
 
 input UserCreateOneWithoutPostsInput {
   create: UserCreateWithoutPostsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutResultsInput {
+  create: UserCreateWithoutResultsInput
   connect: UserWhereUniqueInput
 }
 
@@ -370,6 +864,15 @@ input UserCreateWithoutPostsInput {
   email: String!
   password: String!
   name: String!
+  results: GameResultCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutResultsInput {
+  id: ID
+  email: String!
+  password: String!
+  name: String!
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 type UserEdge {
@@ -418,6 +921,7 @@ input UserUpdateInput {
   password: String
   name: String
   posts: PostUpdateManyWithoutAuthorInput
+  results: GameResultUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -433,15 +937,35 @@ input UserUpdateOneRequiredWithoutPostsInput {
   connect: UserWhereUniqueInput
 }
 
+input UserUpdateOneRequiredWithoutResultsInput {
+  create: UserCreateWithoutResultsInput
+  update: UserUpdateWithoutResultsDataInput
+  upsert: UserUpsertWithoutResultsInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateWithoutPostsDataInput {
   email: String
   password: String
   name: String
+  results: GameResultUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutResultsDataInput {
+  email: String
+  password: String
+  name: String
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input UserUpsertWithoutPostsInput {
   update: UserUpdateWithoutPostsDataInput!
   create: UserCreateWithoutPostsInput!
+}
+
+input UserUpsertWithoutResultsInput {
+  update: UserUpdateWithoutResultsDataInput!
+  create: UserCreateWithoutResultsInput!
 }
 
 input UserWhereInput {
@@ -504,6 +1028,9 @@ input UserWhereInput {
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
+  results_every: GameResultWhereInput
+  results_some: GameResultWhereInput
+  results_none: GameResultWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
