@@ -1,3 +1,6 @@
+process.env.PRISMA_SECRET="mysecret123"
+process.env.APP_SECRET="jwtsecret123"
+
 import { GraphQLServer } from 'graphql-yoga'
 import { prisma } from './generated/prisma-client'
 import resolvers from './resolvers'
